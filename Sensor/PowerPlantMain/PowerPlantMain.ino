@@ -3,6 +3,10 @@
 
 // Matthew L Bringle
 // Sensor Controller for "PowerPlant" Project
+// MUST BE A MEGA2560 or similiar
+
+
+
 
 //SENSORS:
 /*
@@ -48,7 +52,7 @@ void resetArduino() {
   asm volatile ("  jmp 0");
 }
 
-float thermoRead(int pinDef) {
+float thermo(int pinDef) {
   Vo = analogRead(pinDef);
   R2 = R1 * (1023.0 / (float)Vo - 1.0);
   logR2 = log(R2);
@@ -70,6 +74,17 @@ void setup() {
   }
 }
 
+void moisture() {
+  MoistureSensorVal = analogRead(A0);
+  HumidityVal = map(MoistureSensorVal, wet, dry, 100, 0);
+  Serial.print(HumidityVal);
+}
+void lux() {
+  BH1750.start();   //starts a measurement
+  float lux=BH1750.getLux();  //  waits until a conversion finished
+  Serial.print(lux); 
+}
+
 void loop() {
   if (Serial.available() > 0) {
     String input = Serial.readString();
@@ -77,25 +92,19 @@ void loop() {
     if (input.startsWith("sensors")) {
 
       //MOISTURE:
-      MoistureSensorVal = analogRead(A0);
-      HumidityVal = map(MoistureSensorVal, wet, dry, 100, 0);
-      Serial.print(HumidityVal);
-
+      moisture();
       Serial.print(" ");
 
       //LUX - ILLUMINOSITY
-      BH1750.start();   //starts a measurement
-      float lux=BH1750.getLux();  //  waits until a conversion finished
-      Serial.print(lux);       
-
+      lux();
       Serial.print(" ");
 
       //TEMPERATURE PROBES (LOW->HIGH)
-      Serial.print(thermoRead(A1));
+      Serial.print(thermo(A1));
       Serial.print(" ");
-      Serial.print(thermoRead(A2));
+      Serial.print(thermo(A2));
       Serial.print(" ");
-      Serial.print(thermoRead(A3));
+      Serial.print(thermo(A3));
       
       Serial.print(" ");
 
@@ -115,9 +124,25 @@ void loop() {
 
       Serial.println("");
     }
+    
     else if (input.startsWith("reset")) {
       resetArduino();
     }
+
+    else if (input.startsWith("thermo")) {
+      Serial.print(thermo(A1));
+      Serial.print(" ");
+      Serial.print(thermo(A2));
+      Serial.print(" ");
+      Serial.print(thermo(A3));
+      Serial.println("");
+    }
+
+    else if (input.startsWith("lux")) {
+      lux();
+      Serial.println("");
+    }
+    
 
     
   }
