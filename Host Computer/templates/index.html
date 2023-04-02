@@ -1,12 +1,69 @@
 <!DOCTYPE html>
 <html>
-<head>
+  <head>
     <title>Sensor Data</title>
-</head>
-<body>
+    <style>
+      table {
+        border-collapse: collapse;
+        width: 100%;
+      }
+      th, td {
+        text-align: left;
+        padding: 8px;
+        border-bottom: 1px solid #ddd;
+      }
+      th {
+        background-color: #f2f2f2;
+      }
+    </style>
+  </head>
+  <body>
     <h1>Sensor Data</h1>
     <table>
-        <tr><th>Humidity</th><td>{{ humidity }}</td></tr>
-        <tr><th>Luminosity</th><td>{{ luminosity }}</td></tr>
-        <tr><th>Temperature (Bottom)</th><td>{{ temperature_bottom }}</td></tr>
-        <tr><th>Temperature (Middle)</th><
+      <tr>
+        <th>Humidity</th>
+        <td>{{ humidity }}</td>
+      </tr>
+      <tr>
+        <th>Luminosity</th>
+        <td>{{ luminosity }}</td>
+      </tr>
+      <tr>
+        <th>Temperature (Bottom)</th>
+        <td>{{ temperature_bottom }}</td>
+      </tr>
+      <tr>
+        <th>Temperature (Middle)</th>
+        <td>{{ temperature_middle }}</td>
+      </tr>
+      <tr>
+        <th>Temperature (Surface)</th>
+        <td>{{ temperature_surface }}</td>
+      </tr>
+      <tr>
+        <th>V0</th>
+        <td>{{ v0 }}</td>
+      </tr>
+      <tr>
+        <th>V1</th>
+        <td>{{ v1 }}</td>
+      </tr>
+      <tr>
+        <th>V2</th>
+        <td>{{ v2 }}</td>
+      </tr>
+      <tr>
+        <th>V3</th>
+        <td>{{ v3 }}</td>
+      </tr>
+      <tr>
+        <th>V4</th>
+        <td>{{ v4 }}</td>
+      </tr>
+      <tr>
+        <th>V5</th>
+        <td>{{ v5 }}</td>
+      </tr>
+    </table>
+  </body>
+</html>
