@@ -61,19 +61,26 @@ def create_log_file():
     return open(filename, "w")
 
 # Define the route for the webpage
-@app.route("/")
+from flask import Response, stream_with_context
+
+@app.route('/')
 def index():
-    # Read the sensor data
-    data = read_data()
-    # Create a new data log file if necessary
-    if not hasattr(app, "log_file") or app.log_file.closed:
-        app.log_file = create_log_file()
-    # Write the data to the log file
-    app.log_file.write("{}\t{}\n".format(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"), "\t".join(data.values())))
-    app.log_file.flush()
-    # Render the template with the data
-    yield render_template("index.html", **data)
-    time.sleep(5)
+    def generate():
+        while True:
+            # Read the sensor data
+            data = read_data()
+            # Create a new data log file if necessary
+            if not hasattr(app, "log_file") or app.log_file.closed:
+                app.log_file = create_log_file()
+            # Write the data to the log file
+            app.log_file.write("{}\t{}\n".format(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"), "\t".join(data.values())))
+            app.log_file.flush()
+            # Yield the template with the data
+            yield render_template("index.html", **data)
+            # Wait for 5 seconds before generating the next response
+            time.sleep(5)
+    return Response(stream_with_context(generate()))
+
 
 @app.route("/data")
 def data():
