@@ -27,8 +27,8 @@ def read_data():
     # Send the "sensors" keyword over serial to the Arduino Mega Receiver
     ser.write(b'sensors\r\n')
 
-    # Wait for 1 second before reading again
-    time.sleep(2)
+    # Wait for 5 second before reading again
+    time.sleep(5)
 
     # Check if there is any data available in the input buffer
     if ser.in_waiting > 0:
