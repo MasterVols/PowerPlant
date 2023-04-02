@@ -4,41 +4,52 @@
     <title>Sensor Data</title>
     <div id="data-container"></div>
     <script>
-        // define a function to update the data on the page
-        function updateData(data) {
-            // get the data container element
-            var container = document.getElementById("data-container");
-            // clear the contents of the container
-            container.innerHTML = "";
-            // create a new table element to display the data
-            var table = document.createElement("table");
-            // add a header row to the table
-            var headerRow = table.insertRow();
-            for (var key in data) {
-                var headerCell = headerRow.insertCell();
-                headerCell.textContent = key;
+    function updateData() {
+        // Make an AJAX request to the Flask server to get the latest sensor data
+        $.ajax({
+            url: "/data",
+            type: "GET",
+            success: function(data) {
+                // Update the webpage with the new data
+                $("#humidity").text(data.humidity);
+                $("#luminosity").text(data.luminosity);
+                $("#temperature_bottom").text(data.temperature_bottom);
+                $("#temperature_middle").text(data.temperature_middle);
+                $("#temperature_surface").text(data.temperature_surface);
+                $("#v0").text(data.v0);
+                $("#v1").text(data.v1);
+                $("#v2").text(data.v2);
+                $("#v3").text(data.v3);
+                $("#v4").text(data.v4);
+                $("#v5").text(data.v5);
+            },
+            complete: function() {
+                // Schedule the next update in 5 seconds
+                setTimeout(updateData, 5000);
             }
-            // add a data row to the table
-            var dataRow = table.insertRow();
-            for (var key in data) {
-                var dataCell = dataRow.insertCell();
-                dataCell.textContent = data[key];
-            }
-            // add the table to the container
-            container.appendChild(table);
-        }
-        // define a function to fetch new data and update the page
-        function fetchData() {
-            fetch("/data")
-                .then(response => response.json())
-                .then(data => updateData(data))
-                .catch(error => console.error(error));
-        }
-        // call the fetchData function initially to display the initial data
-        fetchData();
-        // set an interval to call the fetchData function every 5 seconds
-        setInterval(fetchData, 5000);
-    </script>
+        });
+    }
+
+    // Start the periodic updates
+    $(document).ready(function() {
+        updateData();
+    });
+    
+    // Clear the old data every time the page loads
+    $(window).on("load", function() {
+        $("#humidity").text("");
+        $("#luminosity").text("");
+        $("#temperature_bottom").text("");
+        $("#temperature_middle").text("");
+        $("#temperature_surface").text("");
+        $("#v0").text("");
+        $("#v1").text("");
+        $("#v2").text("");
+        $("#v3").text("");
+        $("#v4").text("");
+        $("#v5").text("");
+    });
+</script>
     
     <style>
       table {
