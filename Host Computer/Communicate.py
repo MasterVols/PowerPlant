@@ -14,9 +14,6 @@ import serial
 import datetime
 import os
 import time
-from flask import Flask, render_template
-# Define the Flask app
-app = Flask(__name__)
 
 # Set the port and baud rate for the serial connection
 port = "/dev/ttyACM0"
@@ -57,41 +54,15 @@ def create_log_file():
     os.makedirs(os.path.dirname(filename), exist_ok=True)
     # Return the file object
     return open(filename, "w")
-# Define the route for the webpage
-from flask import Response, stream_with_context
 
-@app.route('/')
-def index():
-    def generate():
-        while True:
-            # Read the sensor data
-            data = read_data()
-            # Create a new data log file if necessary
-            if not hasattr(app, "log_file") or app.log_file.closed:
-                app.log_file = create_log_file()
-            # Write the data to the log file
-            app.log_file.write("{}\t{}\n".format(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"), "\t".join(data.values())))
-            app.log_file.flush()
-            # Yield the template with the data
-            yield render_template("index.html", **data)
-            # Wait for 5 seconds before generating the next response
-            time.sleep(5)
-    return Response(stream_with_context(generate()))
+# Create a new data log file
+log_file = create_log_file()
 
-
-@app.route("/data")
-def data():
+# Continuously read and store sensor data
+while True:
     # Read the sensor data
-    data = read_data()
-    # Create a new data log file if necessary
-    if not hasattr(app, "log_file") or app.log_file.closed:
-        app.log_file = create_log_file()
-    # Write the data to the log file
-    app.log_file.write("{}\t{}\n".format(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"), "\t".join(data.values())))
-    app.log_file.flush()
-    # Render the template with the data
-    return render_template("index.html", **data)
-
-# Start the Flask app
-if __name__ == "__main__":
-    app.run(host="10.0.0.237", port=5000, debug=False)
+    sensor_data = read_data()
+    # Write the sensor data to the log file
+    log_file.write(str(sensor_data) + '\n')
+    # Wait for 1 second before reading again
+    time.sleep(1)
