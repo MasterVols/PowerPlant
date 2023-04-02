@@ -26,24 +26,30 @@ ser = serial.Serial(port, baud_rate)
 def read_data():
     # Send the "sensors" keyword over serial to the Arduino Mega Receiver
     ser.write(b'sensors\r\n')
-    # Read the response from the Arduino Mega Receiver
-    response = ser.readline().decode().rstrip()
-    # Split the response into separate values
-    values = response.split()
-    # Return the values as a dictionary
-    return {
-        "humidity": values[0],
-        "luminosity": values[1],
-        "temperature_bottom": values[2],
-        "temperature_middle": values[3],
-        "temperature_surface": values[4],
-        "v0": values[5],
-        "v1": values[6],
-        "v2": values[7],
-        "v3": values[8],
-        "v4": values[9],
-        "v5": values[10]
-    }
+    # Check if there is any data available in the input buffer
+    if ser.in_waiting > 0:
+        # Read the response from the Arduino Mega Receiver
+        response = ser.readline().decode().rstrip()
+        # Split the response into separate values
+        values = response.split()
+        # Return the values as a dictionary
+        return {
+            "humidity": values[0],
+            "luminosity": values[1],
+            "temperature_bottom": values[2],
+            "temperature_middle": values[3],
+            "temperature_surface": values[4],
+            "v0": values[5],
+            "v1": values[6],
+            "v2": values[7],
+            "v3": values[8],
+            "v4": values[9],
+            "v5": values[10]
+        }
+    else:
+        # Return an empty dictionary if there is no data available
+        return {}
+
 # Define a function to create a new data log file
 def create_log_file():
     # Get the current date and time
