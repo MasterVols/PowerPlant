@@ -3,53 +3,6 @@
   <head>
     <title>Sensor Data</title>
     <div id="data-container"></div>
-    <script>
-    function updateData() {
-        // Make an AJAX request to the Flask server to get the latest sensor data
-        $.ajax({
-            url: "/data",
-            type: "GET",
-            success: function(data) {
-                // Update the webpage with the new data
-                $("#humidity").text(data.humidity);
-                $("#luminosity").text(data.luminosity);
-                $("#temperature_bottom").text(data.temperature_bottom);
-                $("#temperature_middle").text(data.temperature_middle);
-                $("#temperature_surface").text(data.temperature_surface);
-                $("#v0").text(data.v0);
-                $("#v1").text(data.v1);
-                $("#v2").text(data.v2);
-                $("#v3").text(data.v3);
-                $("#v4").text(data.v4);
-                $("#v5").text(data.v5);
-            },
-            complete: function() {
-                // Schedule the next update in 5 seconds
-                setTimeout(updateData, 5000);
-            }
-        });
-    }
-
-    // Start the periodic updates
-    $(document).ready(function() {
-        updateData();
-    });
-    
-    // Clear the old data every time the page loads
-    $(window).on("load", function() {
-        $("#humidity").text("");
-        $("#luminosity").text("");
-        $("#temperature_bottom").text("");
-        $("#temperature_middle").text("");
-        $("#temperature_surface").text("");
-        $("#v0").text("");
-        $("#v1").text("");
-        $("#v2").text("");
-        $("#v3").text("");
-        $("#v4").text("");
-        $("#v5").text("");
-    });
-</script>
     
     <style>
       table {
