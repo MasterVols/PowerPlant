@@ -10,12 +10,10 @@
 #       Check at a variable rate the value of all sensors by sending the "sensors" keyword
 #       Show all data on a webpage hosted by the computer. You can assume the host computer that this is going to run on is a RPI 3B
 #       Log all data into a folder called "sensor_data". Each file in that folder should be named the date and the hour span that is was recorded on. A new file should be created every hour.
-
 import serial
 import datetime
 import os
 from flask import Flask, render_template
-
 # Define the Flask app
 app = Flask(__name__)
 
@@ -48,7 +46,6 @@ def read_data():
         "v4": values[9],
         "v5": values[10]
     }
-
 # Define a function to create a new data log file
 def create_log_file():
     # Get the current date and time
@@ -59,7 +56,6 @@ def create_log_file():
     os.makedirs(os.path.dirname(filename), exist_ok=True)
     # Return the file object
     return open(filename, "w")
-
 # Define the route for the webpage
 @app.route("/")
 def index():
@@ -73,7 +69,6 @@ def index():
     app.log_file.flush()
     # Render the template with the data
     return render_template("index.html", **data)
-
 # Start the Flask app
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
