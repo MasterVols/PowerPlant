@@ -38,17 +38,17 @@ def read_data():
         values = response.split()
         # Return the values as a dictionary
         return {
-            values[0],
-            values[1],
-            values[2],
-            values[3],
-            values[4],
-            values[5],
-            values[6],
-            values[7],
-            values[8],
-            values[9],
-            values[10]
+            "Humidity": values[0],
+            "Luminosity": values[1],
+            "Temperature_Bottom": values[2],
+            "Temperature_Middle": values[3],
+            "Temperature_Surface": values[4],
+            "V0": values[5],
+            "V1": values[6],
+            "V2": values[7],
+            "V3": values[8],
+            "V4": values[9],
+            "V5": values[10]
         }
     else:
         # Return an empty dictionary if there is no data available
@@ -72,7 +72,17 @@ log_file = create_log_file()
 while True:
     # Read the sensor data
     sensor_data = read_data()
+    
+    now = datetime.datetime.now()
+    timestamp = now.strftime("%H:%M:%S")
+    
     # Write the sensor data to the log file
-    log_file.write(str(sensor_data) + '\n')
+    log_file.write(f"{timestamp} {str(sensor_data)}\n")
+    # Flush the buffer to ensure that the data is written immediately
+    log_file.flush()
+    # Print the sensor data and timestamp to the terminal
+    print(f"{timestamp} {sensor_data}")
+    
+    print(sensor_data)
     # Wait for 1 second before reading again
     #time.sleep(1)
