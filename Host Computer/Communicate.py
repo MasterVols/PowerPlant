@@ -14,6 +14,7 @@
 import serial
 import datetime
 import os
+import time
 from flask import Flask, render_template
 
 # Define the Flask app
