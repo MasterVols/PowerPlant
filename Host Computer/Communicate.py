@@ -38,17 +38,17 @@ def read_data():
         values = response.split()
         # Return the values as a dictionary
         return {
-            "humidity": values[0],
-            "luminosity": values[1],
-            "temperature_bottom": values[2],
-            "temperature_middle": values[3],
-            "temperature_surface": values[4],
-            "v0": values[5],
-            "v1": values[6],
-            "v2": values[7],
-            "v3": values[8],
-            "v4": values[9],
-            "v5": values[10]
+            values[0],
+            values[1],
+            values[2],
+            values[3],
+            values[4],
+            values[5],
+            values[6],
+            values[7],
+            values[8],
+            values[9],
+            values[10]
         }
     else:
         # Return an empty dictionary if there is no data available
