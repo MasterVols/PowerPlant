@@ -21,27 +21,29 @@
     <h1>Sensor Data</h1>
     <table>
       <tr>
-        <th>Humidity</th>
+        <th>Humidity (%)</th>
         <td>{{ humidity }}</td>
       </tr>
       <tr>
         <th>Luminosity</th>
         <td>{{ luminosity }}</td>
       </tr>
+
       <tr>
-        <th>Temperature (Bottom)</th>
-        <td>{{ temperature_bottom }}</td>
-      </tr>
-      <tr>
-        <th>Temperature (Middle)</th>
-        <td>{{ temperature_middle }}</td>
-      </tr>
-      <tr>
-        <th>Temperature (Surface)</th>
+        <th>Temperature (Surface *C)</th>
         <td>{{ temperature_surface }}</td>
       </tr>
       <tr>
-        <th>V0</th>
+        <th>Temperature (Middle *C)</th>
+        <td>{{ temperature_middle }}</td>
+      </tr>
+      <tr>
+        <th>Temperature (Bottom *C)</th>
+        <td>{{ temperature_bottom }}</td>
+      </tr>
+      
+      <tr>
+        <th>V0 - REF</th>
         <td>{{ v0 }}</td>
       </tr>
       <tr>
