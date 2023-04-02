@@ -13,6 +13,7 @@
 import serial
 import datetime
 import os
+import time
 from flask import Flask, render_template
 # Define the Flask app
 app = Flask(__name__)
@@ -57,10 +58,32 @@ def create_log_file():
     # Return the file object
     return open(filename, "w")
 # Define the route for the webpage
-@app.route("/")
+from flask import Response, stream_with_context
+
+@app.route('/')
 def index():
+    def generate():
+        while True:
+            # Read the sensor data
+            data = read_data()
+            # Create a new data log file if necessary
+            if not hasattr(app, "log_file") or app.log_file.closed:
+                app.log_file = create_log_file()
+            # Write the data to the log file
+            app.log_file.write("{}\t{}\n".format(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"), "\t".join(data.values())))
+            app.log_file.flush()
+            # Yield the template with the data
+            yield render_template("index.html", **data)
+            # Wait for 5 seconds before generating the next response
+            time.sleep(5)
+    return Response(stream_with_context(generate()))
+
+
+@app.route("/data")
+def data():
     # Read the sensor data
     data = read_data()
+<<<<<<< HEAD
     # Create a new data log file if necessary
     if not hasattr(app, "log_file") or app.log_file.closed:
         app.log_file = create_log_file()
@@ -69,6 +92,11 @@ def index():
     app.log_file.flush()
     # Render the template with the data
     return render_template("index.html", **data)
+=======
+    # Return the data as a JSON response
+    return jsonify(data)
+
+>>>>>>> 042cb28baedaf36524dad1d0c1ad2884e8803b0a
 # Start the Flask app
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
