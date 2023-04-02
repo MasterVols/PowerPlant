@@ -108,8 +108,7 @@ void loop() {
       
       Serial.print(" ");
 
-      //Serial.print(analogRead(A4 * 5.0 /1024.0)); first voltage sensor is always grounded for Ref
-      Serial.print(0); 
+      Serial.print(analogRead(A4) * 5.0 /1024.0); //first voltage sensor is always grounded for Ref
       Serial.print(" ");
       Serial.print(analogRead(A5) * 5.0 /1024.0);
       Serial.print(" ");
