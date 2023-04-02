@@ -83,7 +83,6 @@ def index():
 def data():
     # Read the sensor data
     data = read_data()
-<<<<<<< HEAD
     # Create a new data log file if necessary
     if not hasattr(app, "log_file") or app.log_file.closed:
         app.log_file = create_log_file()
@@ -92,11 +91,7 @@ def data():
     app.log_file.flush()
     # Render the template with the data
     return render_template("index.html", **data)
-=======
-    # Return the data as a JSON response
-    return jsonify(data)
 
->>>>>>> 042cb28baedaf36524dad1d0c1ad2884e8803b0a
 # Start the Flask app
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
