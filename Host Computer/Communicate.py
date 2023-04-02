@@ -20,7 +20,7 @@ from flask import Flask, render_template
 app = Flask(__name__)
 
 # Set the port and baud rate for the serial connection
-port = "COM5"
+port = "/dev/ttyACM0"
 baud_rate = 115200
 
 # Open the serial connection
